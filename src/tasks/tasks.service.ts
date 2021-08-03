@@ -63,8 +63,6 @@ export class TasksService {
   deleteTask(id: string): void {
     const task = this.getTask(id);
 
-    if(task){
-      this.tasks = this.tasks.filter(task => task.id !== id);
-    }
+    this.tasks = this.tasks.filter(task => task.id !== id);
   }
 }
