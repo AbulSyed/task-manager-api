@@ -20,15 +20,6 @@ export class TasksController {
     return this.tasksService.getTasks(getTasksFilterDto);
   }
 
-  // @Get()
-  // getTasks(@Query() getTasksFilterDto: GetTasksFilterDto): Task[] {
-  //   if(Object.keys(getTasksFilterDto).length){
-  //     return this.tasksService.getTasksWithFilters(getTasksFilterDto);
-  //   }else{
-  //     return this.tasksService.getTasks();
-  //   }
-  // }
-
   @Get('/:id')
   getTask(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTask(id);
