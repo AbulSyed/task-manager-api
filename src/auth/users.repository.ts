@@ -1,3 +1,4 @@
+import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm"
 import { CreateUserDto } from "./dto/create-user.dto"
 import { User } from "./user.entity"
@@ -12,7 +13,14 @@ export class UsersRepository extends Repository<User> {
       password
     })
 
-    await this.save(user);
-    return user;
+    try {
+      return await this.save(user);
+    }catch(err){
+      if(err.code === '23505'){
+        throw new ConflictException('Username already in use');
+      }else{
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
