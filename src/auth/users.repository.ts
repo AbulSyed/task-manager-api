@@ -1,9 +1,8 @@
-import { ConflictException, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm"
 import { CreateUserDto } from "./dto/create-user.dto"
 import { User } from "./user.entity"
 import * as bcrypt from 'bcrypt';
-import { SigninUserDto } from "./dto/signin-user.dto";
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
@@ -27,20 +26,5 @@ export class UsersRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
-  }
-
-  async signin(signinUserDto: SigninUserDto): Promise<User> {
-    const { username, password } = signinUserDto;
-
-    const user = await this.findOne({ username });
-    if(!user){
-      throw new UnauthorizedException('Failed login');
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch){
-      throw new UnauthorizedException('Failed login');
-    }
-
-    return user;
   }
 }
